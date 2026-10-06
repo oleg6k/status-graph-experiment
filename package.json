@@ -1,0 +1,20 @@
+{
+  "name": "status-graph-experiment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Status graphs vs status whitelists under late, duplicated, out-of-order events (PostgreSQL experiment)",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsx src/run-all.ts 5 1000",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

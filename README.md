@@ -20,23 +20,27 @@ A synthetic reproduction of late, duplicated and out-of-order status events hitt
 
 ## Results (PostgreSQL 16, range across 5 runs, per 1,000 flows)
 
-| Strategy | Wrong final status | Final status, wrong amount | Callback stream moves backward | Duplicate callbacks | Extra retry-loop passes | Callbacks sent (ideal 4,052–4,188) |
+| Strategy | Wrong final status | Final status, wrong amount | Callback stream moves backward | Duplicate callbacks | Extra retry-loop passes | Callbacks sent (ideal 4,053–4,188) |
 |---|---|---|---|---|---|---|
-| A | 606–636 | 0 | 2–4 | 2–4 | 0–3 | 2,780–2,816 |
-| A3 | 168–206 | 0 | 93–108 | 1–7 | 5–16 | 3,029–3,137 |
-| A2 | 0–7 | 0 | 3–15 | 63–85 | 2–6 | 2,923–2,964 |
-| B | 0 | 480–493 | 840–869 | 378–399 | 1–8 | 4,949–5,136 |
-| C | **0** | **0** | **0** | **0** | 2–6 | 2,824–2,849 |
+| A | 591–618 | 0 | 0–3 | 0–3 | 0–1 | 2,753–2,837 |
+| A3 | 157–190 | 0 | 95–106 | 1–7 | 5–13 | 3,072–3,118 |
+| A2 | 2–6 | 0 | 7–12 | 65–85 | 1–2 | 2,909–2,970 |
+| B | 0 | 457–484 | 846–863 | 381–421 | 1–6 | 4,973–5,120 |
+| C | **0** | **0** | **0** | **0** | 1–2 | 2,826–2,855 |
 
-Per-run raw numbers: `results.json`. Worker timing uses an unseeded RNG, so exact counts vary between runs; the pattern does not.
+Per-run raw numbers: `results.json`. Flows and delivery order are seeded; worker timing is not, so exact counts vary between runs. The pattern does not.
 
 ## Run
 
+Requires Node.js 20+ and a PostgreSQL 16 instance (defaults: unix socket in `/tmp`, user `postgres`; override with `PGHOST`, `PGUSER`, etc.).
+
 ```bash
-# PostgreSQL reachable via unix socket in /tmp as user postgres (trust auth)
-pip install psycopg2-binary
-python run_all.py 5 1000     # runs, flows per run
+npm install
+npm start              # 5 runs × 1,000 flows per strategy
+npm run typecheck
 ```
+
+Code: `src/experiment.ts` (graph, flows, strategies, metrics), `src/run-all.ts` (runner).
 
 ## License
 
